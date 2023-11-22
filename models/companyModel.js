@@ -1,5 +1,18 @@
 const mongoose = require('mongoose');
 
+const vacancySchema = new mongoose.Schema({
+  siteName: {
+    type: String,
+    required: true
+  },
+  url: {
+    type: String,
+    required: true
+  }
+},{
+  _id: false
+});
+
 const companySchema = new mongoose.Schema({
   name: {
     type: String,
@@ -16,13 +29,11 @@ const companySchema = new mongoose.Schema({
     type: Boolean,
     required: [true, 'You have to specify if the company is famous']
   },
-  isBig: {
-    type: Boolean,
-    required: [true, 'You have to specify if the company is big']
+  vacancy: {
+    type: vacancySchema,
+    required: true
   }
 });
-
-
 
 const Company = mongoose.model('Company', companySchema);
 

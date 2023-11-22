@@ -19,9 +19,9 @@ const getAllCompanies = async (req, res) => {
 };
 
 const createNewCompany = async (req, res) => {
-  const { name, email, isFamous, isBig } = req.body;
+  const { name, email, isFamous, vacancy } = req.body;
   try {
-    const company = await Company.create({ name, email, isFamous, isBig });
+    const company = await Company.create({ name, email, isFamous, vacancy });
     res.status(201).json({
       status: 'success',
       data: {
