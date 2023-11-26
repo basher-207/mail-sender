@@ -1,0 +1,28 @@
+*{
+  color: black;
+}
+
+body{
+  margin: 0;
+}
+
+section{
+  padding: 0 6vw;
+}
+
+header{
+  background-color: aqua;
+  padding: 1rem 6vw;
+  display: flex;
+  justify-content: space-between;
+}
+
+a{
+  text-decoration: none;
+}
+
+.header-section{
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}

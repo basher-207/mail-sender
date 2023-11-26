@@ -19,7 +19,7 @@ const sendMail = async (mailBody) => {
     subject: mailBody.subject,
     text: mailBody.text,
     attachments: [{
-      path: __dirname + '/../../userAttachments/CV.pdf',
+      path: __dirname + '/../../userAttachments/filename',
     }]
   };
 
