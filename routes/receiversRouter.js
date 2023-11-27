@@ -5,5 +5,14 @@ const router = express.Router();
 
 router.route('/')
   .get(controller.getReceivers)
+  .post(controller.deleteReceivers)
+
+router.route('/add')
+  .get(controller.getAddReceivers)
+  .post(controller.addNewReceiver)
+
+router.route('/:id')
+  .get(controller.getEditReceiver)
+  .post(controller.editReceiver)
 
 module.exports = router;

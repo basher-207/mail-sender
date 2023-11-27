@@ -1,0 +1,27 @@
+<section>
+  <h1 class="headline-text">Add receivers</h1>
+  <form class="receivers-to-add" action="/receivers/add" method="post"  id="receivers-to-add">
+    <div class="receiver-to-add">
+      <label class="to-add-name" for="name">Name:</label>
+      <input class="to-add-name" type="text" name="name" id="name">
+      <label class="to-add-email" for="email">Email:</label>
+      <input class="to-add-email" type="email" name="email" id="email">
+    </div>
+    <button type="submit">Add</button>
+  </form>
+
+  <% if(receiverAdded){ %>
+    <div class="successful-message">
+      <p>Receiver successfully added</p>
+    </div>
+  <% } %>
+</section>
+
+<script>
+  const message = document.querySelector('.successful-message');
+  if(message){
+    setTimeout(() => {
+      message.style.display = 'none';
+    }, 3000);
+  }
+</script>

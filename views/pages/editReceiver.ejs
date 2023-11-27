@@ -1,0 +1,33 @@
+<section>
+  <h1 class="headline-text">Edit receiver</h1>
+  <form class="receivers-to-add" action="/receivers/<%= receiver._id %>" method="post"  id="receivers-to-add">
+    <div class="receiver-to-add">
+      <label class="to-add-name" for="name">Name:</label>
+      <input class="to-add-name" type="text" name="name" id="name" value=<%= receiver.name %>>
+      <label class="to-add-email" for="email">Email:</label>
+      <input class="to-add-email" type="email" name="email" id="email" value=<%= receiver.email %>>
+    </div>
+    <button type="submit">Edit</button>
+  </form>
+
+  <div class="message">
+    <p>Name and email fields can not be empty</p>
+  </div>
+</section>
+
+<script>
+  const message = document.querySelector('.message');
+  const nameInput = document.querySelector('#name');
+  const emailInput = document.querySelector('#email');
+  nameInput.addEventListener('input', onEmptyFunc);
+  emailInput.addEventListener('input', onEmptyFunc);
+
+  function onEmptyFunc() {
+    if(nameInput.value.length === 0 || emailInput.value.length === 0){
+      console.log("empty");
+      message.style.display = 'block';
+    }else{
+      message.style.display = 'none';
+    }
+  };
+</script>

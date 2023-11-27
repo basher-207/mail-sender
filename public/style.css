@@ -21,8 +21,119 @@ a{
   text-decoration: none;
 }
 
+/* HEADER */
 .header-section{
   display: flex;
   align-items: center;
   gap: 3rem;
 }
+
+/* All routes */
+.headline-text{
+  margin: 3rem 0 2rem;
+  text-align: center;
+}
+
+ul{
+  list-style-type: none;
+  padding: 0;
+}
+
+/* RECEIVERS /receivers route */
+.recievers-section{
+  margin: 2rem 0;
+}
+
+.receivers-buttons{
+  height: 3rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.receivers-buttons .elements{
+  display: flex;
+  gap: 3rem;
+}
+
+.receivers-buttons .element{
+  background-color: white;
+  border: solid;
+  padding: 1rem;
+}
+
+.element.searchInput{
+  width: 40vw;
+}
+
+#receivers-form{
+  border: solid;
+}
+
+.receiver{
+  height: 2rem;
+  margin: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.receiver .receiver-elements{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  height: 3rem;
+}
+
+.name{
+  width: 15rem;
+}
+
+.email{
+  width: auto;
+}
+
+.edit{
+  opacity: 0.5;
+}
+
+/* RECEIVERS /receivers/add route */
+.receivers-to-add{
+  display: flex;
+  flex-direction: column;
+}
+
+.receiver-to-add{
+  border: solid;
+  padding: 2rem;
+  margin: auto 18vw;
+  
+  display: flex;
+  flex-direction: column;
+}
+
+.receivers-to-add button{
+  margin: 1rem 18vw;
+}
+
+.successful-message{
+  background-color: rgb(211, 209, 209);
+  text-align: center;
+  margin: 5rem;
+  
+  opacity: 0.5;
+}
+
+/* RECEIVERS /receivers/:id route */
+.message{
+  background-color: rgb(211, 209, 209);
+  text-align: center;
+  margin: 5rem;
+  
+  opacity: 0.5;
+  display: none;
+}
+
