@@ -70,7 +70,7 @@ exports.getEditReceiver = async (req, res) => {
   const id = req.params.id;
   try {
     const receiver = await Receiver.findById(id).exec();
-    res.render('pages/receivers/editReceiver', { receiver });
+    res.render('pages/receivers/editReceiver', { receiver, receiverAlreadyExist: false });
   } catch (error) {
     res.status(500).json({
       status: 'fail',
@@ -90,7 +90,15 @@ exports.editReceiver = async (req, res) => {
     return;
   }
   try {
-    await Receiver.findByIdAndUpdate(id, { name, email });
+    const receiver = await Receiver.findById(id);
+    const receiverCheck = await Receiver.find({ email: email });
+    // checking if user with that email already exist
+    if(receiverCheck.length === 1 && id !== String(receiverCheck[0]._id)){
+      res.render('pages/receivers/editReceiver', { receiver,  receiverAlreadyExist: true });
+      return
+    }
+    // updating current receiver
+    await receiver.updateOne({ name, email });
     res.redirect('/receivers');
   } catch (error) {
     res.status(500).json({

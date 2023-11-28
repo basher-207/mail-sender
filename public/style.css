@@ -107,13 +107,3 @@ ul{
   justify-content: space-between;
 }
 
-/* RECEIVERS /receivers/:id route */
-.message{
-  background-color: rgb(211, 209, 209);
-  text-align: center;
-  margin: 5rem;
-  
-  opacity: 0.5;
-  display: none;
-}
-

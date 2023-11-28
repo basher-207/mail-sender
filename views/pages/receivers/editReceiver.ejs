@@ -1,33 +1,53 @@
 <section>
   <h1 class="headline-text">Edit receiver</h1>
-  <form class="receivers-to-add" action="/receivers/<%= receiver._id %>" method="post"  id="receivers-to-add">
-    <div class="receiver-to-add">
-      <label class="to-add-name" for="name">Name:</label>
-      <input class="to-add-name" type="text" name="name" id="name" value=<%= receiver.name %>>
-      <label class="to-add-email" for="email">Email:</label>
-      <input class="to-add-email" type="email" name="email" id="email" value=<%= receiver.email %>>
+
+  <form action="/receivers/<%= receiver._id %>" method="post">
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" name="name" id="name" value=<%= receiver.name %> placeholder="name">
+      <label for="floatingInput">Name</label>
     </div>
-    <button type="submit">Edit</button>
+    <div class="form-floating mb-3">
+      <input type="email" class="form-control" name="email" id="email" value=<%= receiver.email %> placeholder="name@example.com">
+      <label for="floatingInput">Email address</label>
+    </div>
+    <button class="btn btn-success" type="submit" disabled>Edit receiver</button>
   </form>
 
-  <div class="message">
-    <p>Name and email fields can not be empty</p>
-  </div>
+  <% if(receiverAlreadyExist){ %>
+    <div class="receiver-add-alert-warning alert alert-warning" role="alert">
+      Receiver with that Email is already exist!
+      <button id="already-exist-button-close" type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+  <% } %>
+
 </section>
 
 <script>
-  const message = document.querySelector('.message');
   const nameInput = document.querySelector('#name');
   const emailInput = document.querySelector('#email');
-  nameInput.addEventListener('input', onEmptyFunc);
-  emailInput.addEventListener('input', onEmptyFunc);
+  
+  // enable submit button
+  const addButton = document.querySelector('button[type=submit]');
+  const form = document.querySelector('form[method=post]');
+  buttonAriseFunc(); // enabling the button
 
-  function onEmptyFunc() {
-    if(nameInput.value.length === 0 || emailInput.value.length === 0){
-      console.log("empty");
-      message.style.display = 'block';
+  form.addEventListener('input', buttonAriseFunc);
+
+  function buttonAriseFunc() {
+    if(nameInput.value.length > 0 && emailInput.value.length > 0){
+      addButton.disabled = false;
     }else{
-      message.style.display = 'none';
+      addButton.disabled = true;
     }
   };
+
+  // already exist alert
+  const warning = document.querySelector('.receiver-add-alert-warning');
+  const alreadeExistCloseButton = document.querySelector('#already-exist-button-close');
+  alreadeExistCloseButton.addEventListener('click', closeWarnigFunc);
+
+  function closeWarnigFunc() {
+    warning.style.display = 'none';
+  };
+
 </script>
