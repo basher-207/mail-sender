@@ -1,38 +1,42 @@
 <section>
   <h1 class="headline-text">Receivers storage</h1>
-  <div class="recievers-section receivers-buttons">
-    <div class="elements left-el">
-      <a class="element" href="/receivers/add">Add new receivers</a>
+
+  <div class="receivers-top-tab">
+    <div class="receivers-buttons">
+      <a class="btn btn-primary" href="/receivers/add">Add new receivers</a>
+      <button class="btn btn-danger" type="submit" form="receivers-form">Delete</button>
     </div>
-    <div class="elements right-el">
-      <button class="element" type="submit" form="receivers-form">Delete</button>
-      <input class="element searchInput" id="searchInput" type="text" name="searchInput" placeholder="Search">
+    <div class="receivers-buttons">
+      <input class="form-control me-2" id="searchInput" type="text" name="searchInput" placeholder="Search">
     </div>
   </div>
-  <div class="recievers-section receivers-list">
-    <% if (receiversList.length === 0){ %>
-      <p>Your receivers storage is empty.</p>
-      <p>Please add receivers.</p>
-    <% }else{ %>
-    <form id="receivers-form" action="/receivers" method="post">
-      <ul>
+ 
+  <% if (receiversList.length === 0){ %>
+    <div class="alert alert-primary">
+      Your receivers storage is empty.
+      Please add receivers.
+    </div>
+  <% }else{ %>
+
+  <form id="receivers-form" action="/receivers" method="post">
+
+    <table class="table table-primary table-hover">
+      <tbody>
         <% receiversList.forEach((receiver) => { %>
-          <li class="receiver">
-            <div class="receiver-elements">
-              <input class="checkbox" type="checkbox" name="receiverId" value=<%= receiver._id %>>
-              <p class="text name"><%= receiver.name %></p>
-              <p class="text email"><%= receiver.email %></p>
-            </div>
-            <div class="receiver-elements">
-              <a class="edit" href="/receivers/<%= receiver._id %>">edit</a>
-            </div>
-          </li>
+        <tr class="receiver">
+          <td class="table-primary"><input class="checkbox" type="checkbox" name="receiverId" value=<%= receiver._id %> ></td> 
+          <td class="table-primary"><%= receiver.name %></td>
+          <td class="table-primary"><%= receiver.email %></td>
+          <td class="table-primary last-element"><a href="/receivers/<%= receiver._id %>">edit</a></td>
+        </tr>
         <% }); %>
-      </ul>
-    </form>
-    <% } %>
-  </div>
-</section>
+      </tbody>
+    </table>
+
+  </form>
+  <% }; %>
+
+</section> 
 
 <script>
   // Searching
@@ -44,8 +48,7 @@
     const itemsList = document.querySelectorAll('.receiver');
     
     itemsList.forEach((item) => {
-      const [name, email, _] = item.innerText.split('\n\n');
-      const textContent = name.concat(" " + email);
+      const textContent = item.innerText.replace('edit', '');
       
       if(textContent.toLowerCase().includes(filter)){
         item.style.display = '';
@@ -55,6 +58,18 @@
     });
   };
 
-  // Deleting
+  // Deleting button arise
+  document.querySelector('#receivers-form').addEventListener('click', checkboxFunc)
+  const checboxsCount = document.querySelectorAll('input[type=receivers-form]').length;
+  const deleteButton = document.querySelector('button.btn-danger');
+
+  function checkboxFunc() {
+    const checkedCheckboxesCount = document.querySelectorAll('input[type=checkbox]:checked').length;
+    if(checkedCheckboxesCount != 0){
+      deleteButton.style.display = 'block';
+    }else{
+      deleteButton.style.display = 'none';
+    }
+  };
 
 </script>

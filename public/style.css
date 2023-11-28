@@ -1,8 +1,17 @@
+/*
+#F3EEEA
+#EBE3D5
+#B0A695
+#776B5D
+*/
+
 *{
-  color: black;
+  color: #776B5D;
+  transition: 100ms;
 }
 
 body{
+  background-color: #F3EEEA;
   margin: 0;
 }
 
@@ -10,28 +19,57 @@ section{
   padding: 0 10vw;
 }
 
-header{
-  background-color: aqua;
-  padding: 1rem 6vw;
+header {
+  padding: 3rem 10vw 2rem;
   display: flex;
   justify-content: space-between;
 }
 
-a{
+a {
+  color: #776B5D;
   text-decoration: none;
 }
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+a:hover {
+  opacity: 0.5;
+}
+
+.table {
+  margin: 1rem 0;
+}
+
+tr .last-element {
+  text-align: right;
+}
+
+tr {
+  margin: auto, 10rem;
+}
+
+.alert {
+  margin: 1rem auto;
+}
+
 
 /* HEADER */
 .header-section{
   display: flex;
   align-items: center;
-  gap: 3rem;
+  gap: 2rem;
 }
 
+
 /* All routes */
-.headline-text{
-  margin: 3rem 0 2rem;
-  text-align: center;
+section h1 {
+  font-size: 1.5rem;
 }
 
 ul{
@@ -39,66 +77,30 @@ ul{
   padding: 0;
 }
 
+
 /* RECEIVERS /receivers route */
-.recievers-section{
+.recievers-section {
   margin: 2rem 0;
 }
 
-.receivers-buttons{
-  height: 3rem;
-
+.receivers-top-tab {
   display: flex;
-  align-items: center;
   justify-content: space-between;
 }
 
-.receivers-buttons .elements{
+.receivers-buttons {
   display: flex;
-  gap: 3rem;
+  gap: 2rem;
 }
 
-.receivers-buttons .element{
-  background-color: white;
-  border: solid;
-  padding: 1rem;
+.receivers-buttons input {
+  width: 25vw;
+} 
+
+.receivers-buttons button{
+  display: none;
 }
 
-.element.searchInput{
-  width: 40vw;
-}
-
-#receivers-form{
-  border: solid;
-}
-
-.receiver{
-  height: 2rem;
-  margin: 1rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.receiver .receiver-elements{
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-
-  height: 3rem;
-}
-
-.name{
-  width: 15rem;
-}
-
-.email{
-  width: auto;
-}
-
-.edit{
-  opacity: 0.5;
-}
 
 /* RECEIVERS /receivers/add route */
 .receivers-to-add{

@@ -18,7 +18,6 @@ exports.getReceivers = async (req, res) => {
 // deleting selected receivers
 exports.deleteReceivers = async (req, res) => {
   receiversIdsToDelete = req.body.receiverId;
-  console.log(receiversIdsToDelete);
   if(!receiversIdsToDelete){
     res.redirect('/receivers');
   }else{
