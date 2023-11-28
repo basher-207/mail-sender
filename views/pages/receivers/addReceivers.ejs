@@ -1,27 +1,64 @@
 <section>
-  <h1 class="headline-text">Add receivers</h1>
-  <form class="receivers-to-add" action="/receivers/add" method="post"  id="receivers-to-add">
-    <div class="receiver-to-add">
-      <label class="to-add-name" for="name">Name:</label>
-      <input class="to-add-name" type="text" name="name" id="name">
-      <label class="to-add-email" for="email">Email:</label>
-      <input class="to-add-email" type="email" name="email" id="email">
+  <h1 class="headline-text">Add receiver</h1>
+
+  <form action="/receivers/add" method="post">
+    <div class="form-floating mb-3">
+      <input type="text" class="form-control" name="name" id="name" placeholder="name">
+      <label for="floatingInput">Name</label>
     </div>
-    <button type="submit">Add</button>
+    <div class="form-floating mb-3">
+      <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+      <label for="floatingInput">Email address</label>
+    </div>
+    <button class="btn btn-success" type="submit" disabled>Add receiver</button>
   </form>
 
+  <% if(receiverAlreadyExist){ %>
+    <div class="receiver-add-alert-warning alert alert-warning" role="alert">
+      Receiver with that Email is already exist!
+      <button id="already-exist-button-close" type="button" class="btn-close" aria-label="Close"></button>
+    </div>
+  <% } %>
+
   <% if(receiverAdded){ %>
-    <div class="successful-message">
-      <p>Receiver successfully added</p>
+    <div class="receiver-add-alert-success alert alert-success" role="alert">
+      Receiver successfully added!
     </div>
   <% } %>
 </section>
 
 <script>
-  const message = document.querySelector('.successful-message');
-  if(message){
+  // enable submit button
+  const addButton = document.querySelector('button[type=submit]');
+  const nameInput = document.querySelector('#name');
+  const emailInput = document.querySelector('#email');
+  const form = document.querySelector('form[method=post]');
+
+  form.addEventListener('input', buttonAriseFunc);
+
+  function buttonAriseFunc() {
+    if(nameInput.value.length > 0 && emailInput.value.length > 0){
+      addButton.disabled = false;
+    }else{
+      addButton.disabled = true;
+    }
+  };
+
+  // success-alert
+  const successAlert = document.querySelector('.alert-success');
+  if(successAlert){
     setTimeout(() => {
-      message.style.display = 'none';
+      successAlert.style.display = 'none';
     }, 3000);
   }
+
+  // already exist alert
+  const warning = document.querySelector('.receiver-add-alert-warning');
+  const alreadeExistCloseButton = document.querySelector('#already-exist-button-close');
+  alreadeExistCloseButton.addEventListener('click', closeWarnigFunc);
+
+  function closeWarnigFunc() {
+    warning.style.display = 'none';
+  };
+
 </script>

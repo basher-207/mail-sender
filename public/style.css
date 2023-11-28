@@ -101,32 +101,10 @@ ul{
   display: none;
 }
 
-
-/* RECEIVERS /receivers/add route */
-.receivers-to-add{
+/* RECEIVERS /receivers/add */
+.receiver-add-alert-warning {
   display: flex;
-  flex-direction: column;
-}
-
-.receiver-to-add{
-  border: solid;
-  padding: 2rem;
-  margin: auto 18vw;
-  
-  display: flex;
-  flex-direction: column;
-}
-
-.receivers-to-add button{
-  margin: 1rem 18vw;
-}
-
-.successful-message{
-  background-color: rgb(211, 209, 209);
-  text-align: center;
-  margin: 5rem;
-  
-  opacity: 0.5;
+  justify-content: space-between;
 }
 
 /* RECEIVERS /receivers/:id route */

@@ -24,7 +24,7 @@
       <tbody>
         <% receiversList.forEach((receiver) => { %>
         <tr class="receiver">
-          <td class="table-primary"><input class="checkbox" type="checkbox" name="receiverId" value=<%= receiver._id %> ></td> 
+          <td class="table-primary"><input class="form-check-input" type="checkbox" name="receiverId" value=<%= receiver._id %> ></td> 
           <td class="table-primary"><%= receiver.name %></td>
           <td class="table-primary"><%= receiver.email %></td>
           <td class="table-primary last-element"><a href="/receivers/<%= receiver._id %>">edit</a></td>

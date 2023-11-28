@@ -35,7 +35,7 @@ exports.deleteReceivers = async (req, res) => {
 
 // GET /receivers/add
 exports.getAddReceivers = (req, res) => {
-  res.render('pages/receivers/addReceivers', { receiverAdded: false });
+  res.render('pages/receivers/addReceivers', { receiverAdded: false, receiverAlreadyExist: false });
 };
 
 // POST /receivers/add
@@ -47,8 +47,15 @@ exports.addNewReceiver = async (req, res) => {
     return;
   }
   try {
+    // checking if user with that email already exist
+    const receiver = await Receiver.find({ email });
+    if(receiver.length !== 0){
+      res.render('pages/receivers/addReceivers', { receiverAdded: false, receiverAlreadyExist: true });
+      return
+    }
+    // adding new receiver
     await Receiver.create({ name, email });
-    res.render('pages/receivers/addReceivers', { receiverAdded: true });
+    res.render('pages/receivers/addReceivers', { receiverAdded: true, receiverAlreadyExist: false });
   } catch (error) {
     res.status(500).json({
       status: 'fail',
