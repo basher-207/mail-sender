@@ -35,7 +35,7 @@ exports.deleteReceivers = async (req, res) => {
 
 // GET /receivers/add
 exports.getAddReceivers = (req, res) => {
-  res.render('pages/addReceivers', { receiverAdded: false });
+  res.render('pages/receivers/addReceivers', { receiverAdded: false });
 };
 
 // POST /receivers/add
@@ -48,7 +48,7 @@ exports.addNewReceiver = async (req, res) => {
   }
   try {
     await Receiver.create({ name, email });
-    res.render('pages/addReceivers', { receiverAdded: true });
+    res.render('pages/receivers/addReceivers', { receiverAdded: true });
   } catch (error) {
     res.status(500).json({
       status: 'fail',
@@ -63,7 +63,7 @@ exports.getEditReceiver = async (req, res) => {
   const id = req.params.id;
   try {
     const receiver = await Receiver.findById(id).exec();
-    res.render('pages/editReceiver', { receiver });
+    res.render('pages/receivers/editReceiver', { receiver });
   } catch (error) {
     res.status(500).json({
       status: 'fail',
