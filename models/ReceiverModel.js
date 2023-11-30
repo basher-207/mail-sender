@@ -11,7 +11,12 @@ const ReceiverSchema = new mongoose.Schema({
     required: [true, 'Company email is required'],
     unique: [true, 'Company with this email address already exist']
   },
-  // attachedToLetters:[lettersSchema]
+  lettersTemplates: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Letter',
+    }
+  ]
 });
 
 const Receiver = mongoose.model('Receiver', ReceiverSchema);

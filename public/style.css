@@ -58,6 +58,21 @@ tr {
   margin: 1rem auto;
 }
 
+.container {
+  padding: 0;
+  margin: 1rem auto;
+}
+
+.col {
+  padding-bottom: 1.5rem;
+}
+
+.card-text {
+  height: 13rem;
+  overflow: scroll;
+  white-space: break-spaces;
+  text-align: justify;
+}
 
 /* HEADER */
 .header-section{
@@ -105,5 +120,46 @@ ul{
 .receiver-add-alert-warning {
   display: flex;
   justify-content: space-between;
+}
+
+
+/* LETTERS TEMPLATES /letters route */
+.text-to-hide {
+  margin: 0;
+}
+
+.receivers-table-container-in-template-card {
+  height: 0px;
+  margin-top: 0;
+  overflow: scroll;
+}
+
+.receivers-button-letters-card {
+  width: 100%;
+  text-align: left;
+  border-radius: 0%;
+}
+
+.receivers-table-letters-card {
+  margin-top: 0;
+}
+
+
+.hidden {
+  height: 0px;
+    -webkit-transition: height 0.5s linear;
+       -moz-transition: height 0.5s linear;
+        -ms-transition: height 0.5s linear;
+         -o-transition: height 0.5s linear;
+            transition: height 0.5s linear;
+}
+
+.open {
+  height: 13rem;
+  -webkit-transition: height 0.5s linear;
+     -moz-transition: height 0.5s linear;
+      -ms-transition: height 0.5s linear;
+       -o-transition: height 0.5s linear;
+          transition: height 0.5s linear;
 }
 

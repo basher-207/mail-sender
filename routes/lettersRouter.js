@@ -6,4 +6,7 @@ const router = express.Router();
 router.route('/')
   .get(controller.getLetters)
 
+router.route('/add')
+  .get(controller.getAddLetter)
+
 module.exports = router;

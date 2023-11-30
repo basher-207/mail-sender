@@ -1,3 +1,104 @@
 <section>
-  <h1>letters</h1>
+  <h1 class="headline-text">Letters templates storage</h1>
+
+  <div class="receivers-top-tab">
+    <div class="receivers-buttons">
+      <a class="btn btn-primary" href="/letters/add">Create new template</a>
+      <button class="btn btn-danger" type="submit" form="receivers-form">Delete</button>
+    </div>
+    <div class="receivers-buttons">
+      <input class="form-control me-2" id="searchInput" type="text" name="searchInput" placeholder="Search">
+    </div>
+  </div>
+
+
+  <% if(letterTemplates.length === 0){ %>
+    <div class="alert alert-primary">
+      Your letters templates storage is empty.
+      Please create letter template.
+    </div>
+  <% }else{ %>
+    <div id="container-with-templates" class="container">
+      <div class="row row-cols-2">
+        
+        <% letterTemplates.forEach((template) => { %>
+  
+        <div class="col">
+          <div class="card">
+            <h5 class="card-header"><%= template.name %></h5>
+            <div class="card-body">
+              <p class="card-text text-to-hide"><%= template.letterTextRow %></p>
+              <button type="button" class="btn btn-light receivers-button-letters-card" value="text">Receivers</button>
+              <div class="container receivers-table-container-in-template-card">
+                <table class="table table-primary table-hover table-sm receivers-table-letters-card">
+                  <tbody>
+                    <% const templateReceiversArr = template.interjectionsPersonalized; %>
+                    <% templateReceiversArr.forEach((receiverInfo) => { %>
+                      <% const receiver =  receiverInfo.receiver %>
+                      <tr class="receiver">
+                        <td class="table-primary"><%= receiver.name %></td>
+                        <td class="table-primary"><%= receiver.email %></td>
+                      </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
+
+              </div>
+              <a href="#" class="btn btn-primary card-button">Open template</a>
+            </div>
+          </div>
+        </div>
+  
+        <% }); %>
+  
+      </div>
+    </div>
+  <% } %> 
+  
+
 </section>
+
+<script>
+  //card accordion for emails
+  const templatesContainer = document.querySelector('#container-with-templates');
+  templatesContainer.addEventListener('click', receiversAriseFunc);
+
+  function receiversAriseFunc(event) {
+    const validation = event.target.className.includes('receivers-button-letters-card');
+    
+    if(validation){
+      const text = event.target.offsetParent.children[1].children[0];
+      const table = event.target.offsetParent.children[1].children[2];
+
+      if(event.target.value === 'text'){
+        event.target.value = "table"
+        text.classList.add('hidden');
+        table.classList.add('open');
+      }else{
+        event.target.value = "text"
+        text.classList.remove('hidden');
+        table.classList.remove('open');
+      }
+    }
+  };
+
+  //Searching
+  document.querySelector('#searchInput').addEventListener('input', filterFunction);
+
+  function filterFunction() {
+    const filter = document.querySelector('#searchInput').value.toLowerCase();
+    const itemsList = document.querySelectorAll('.col');
+
+    itemsList.forEach((item) => {
+      const headerText = item.children[0].children[0].innerText;
+      const bodyText = item.children[0].children[1].children[0].innerText;
+      const textToSearch = headerText.concat(" " + bodyText).toLowerCase();
+
+      if(textToSearch.includes(filter)){
+        item.style.display = '';
+      }else{
+        item.style.display = 'none';
+      }
+    });
+  };
+</script>
