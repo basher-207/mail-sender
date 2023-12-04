@@ -82,6 +82,7 @@ tr {
 }
 
 
+
 /* All routes */
 section h1 {
   font-size: 1.5rem;
@@ -162,4 +163,34 @@ ul{
        -o-transition: height 0.5s linear;
           transition: height 0.5s linear;
 }
+
+
+/* TEMPLATE CREATION /letters/add route */
+
+.all-receivers-top-tab {
+  display: flex;
+  justify-content: space-between;
+}
+
+.all-receivers-top-tab input {
+  width: 25vw;
+}
+
+.added-receiver-card {
+  background-color: #F3EEEA;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+#create-template-button {
+  margin: 1rem auto 2rem;
+}
+
+
+
+.addLetter-textarea {
+  resize: none;
+}
+
+
 

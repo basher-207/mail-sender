@@ -1,3 +1,297 @@
 <section>
-  Add letter
+  <h1 class="headline-text">Create letter template</h1>
+  <!-- template name input-->
+  <div class="mb-3">
+    <label for="templateName" class="form-label">Letter template name:</label>
+    <input type="text" class="form-control" name="templateName" id="templateName" aria-describedby="emailHelp">
+  </div>
+
+  <!-- Accordion for all information and iputs -->
+  <div class="accordion" id="accordionPanelsStayOpenExample">
+
+    <!-- Receivers stoarge list -->
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+          Receivers selection
+        </button>
+      </h2>
+      <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
+        <div class="accordion-body">
+
+          <!-- top tab with select all button and seacrh input -->
+          <div class="all-receivers-top-tab">
+            <button id="addLetter-select-all-receivers-button" type="button" class="btn btn-primary" value="notPressed" onclick="addAllRecieversFunc()">Add all</button>
+            <input class="form-control me-2 all-receivers-table-search-input" id="searchInput" type="text" name="searchInput" placeholder="Search">
+          </div>
+          
+          <!-- all receivers table  -->
+          <table class="table table-primary table-hover addLetter-all-receivers-table">
+            <tbody>
+              <% receiversList.forEach((receiver) => { %>
+              <tr class="receiver all-receivers-table-receiver">
+                <td class="table-primary"><button type="button" class="btn btn-success btn-sm all-receivers-add-button" value="add" onclick="addButtonFunc('<%= receiver._id %>', this)">Add</button></td>
+                <td class="table-primary"><%= receiver.name %></td>
+                <td class="table-primary"><%= receiver.email %></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+          
+        </div>
+      </div>
+    </div>
+
+    <form action="">
+
+        <!-- Letter settings -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+            Letter
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+          <div class="accordion-body">
+
+            <div class="container">
+              <div class="row row-cols-2">
+                <!-- letter text -->
+                <div class="col-8">
+                  <div class="form-floating">
+                    <textarea class="form-control addLetter-textarea" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 20rem"></textarea>
+                    <label for="floatingTextarea2">Letter text</label>
+                  </div>
+                </div>
+                <!-- changeble fields -->
+                <div class="col-4">
+                  <div class="card">
+                    <div class="card-header">
+                      Changable fields:
+                    </div>
+                    <ul id="letter-changable-fields-list" class="list-group list-group-flush">
+                      <!-- name field by default -->
+                      <li class="list-group-item disabled">&ltname&gt</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Selected receivers settings -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+            Selected receivers list
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+          <div class="accordion-body">
+
+            <% receiversList.forEach((receiver) => { %>
+
+              <div class="card added-receiver-card card-id-<%= receiver._id %>" >
+                <div class="card-body">
+
+                  <!-- receiver info -->
+                  <h5 class="card-title"><%= receiver.name %></h5>
+                  <h6 class="card-subtitle mb-2 text-body-secondary"><%= receiver.email %></h6>
+
+                  <!-- letter text for current receiver -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a<%= String(receiver._id) %>" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Letter text
+                      </button>
+                    </h2>
+                    <div id="a<%= String(receiver._id) %>" class="accordion-collapse collapse" >
+                      <div class="accordion-body">
+                        Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.
+                      </div>
+                    </div>
+                  </div>
+  
+                  <!-- changable fields -->
+                  <label  class="form-label" style="margin-top: 1rem; display: none;">Changable fields:</label>
+                  <ul class="list-group" style="display: none;">
+                    <!-- <li class="list-group-item">
+                      <label class="form-label">Password</label>
+                      <input class="form-control form-control-sm" type="text" aria-label=".form-control-sm example">
+                    </li> -->
+                  </ul>
+
+                </div>
+              </div>
+
+            <% }); %>
+           
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Create button -->
+  <button id="create-template-button" type="button" class="btn btn-success">Create template</button>
 </section>
+
+<script>
+  // ALL RECEIVERS SECTION
+
+  // add all receivers button
+  function addAllRecieversFunc() {
+    const addAllButton = document.querySelector('#addLetter-select-all-receivers-button');
+    const addButtons = document.querySelectorAll('.all-receivers-add-button');
+    if(addAllButton.value === 'notPressed'){
+      addAllButton.value = 'pressed';
+      addAllButton.innerText = 'Remove all'; 
+      addButtons.forEach((button) => {
+        button.value = 'add';
+        button.innerText = 'Add';
+        button.classList.remove('btn-danger');
+        button.classList.add('btn-success');
+        button.click();
+      });
+    }else{
+      addAllButton.value = 'notPressed';
+      addAllButton.innerText = 'Add all';
+      addButtons.forEach(button => {
+        button.value = 'remove';
+        button.innerText = 'Remove';
+        button.classList.remove('btn-success');
+        button.classList.add('btn-danger');
+        button.click();
+      });
+    }
+  };
+
+  // add receiver from all receivers table to template Receivers section
+  function addButtonFunc(receiverId, button) {
+    if(button.value === "add"){
+      button.value = 'remove';
+      button.innerText = 'Remove';
+      button.classList.remove('btn-success');
+      button.classList.add('btn-danger');
+      addOrRemoveReceiverFunc(receiverId, "add");
+    }else{
+      button.value = 'add';
+      button.innerText = 'Add';
+      button.classList.remove('btn-danger');
+      button.classList.add('btn-success');
+      addOrRemoveReceiverFunc(receiverId, "remove");
+    }
+  };
+
+  // adding or removing receiver cards from receivers list
+  function addOrRemoveReceiverFunc(receiverId, option) {
+    const cardIdClass = `card-id-${receiverId}`;
+    const card = document.querySelector(`.added-receiver-card.${cardIdClass}`);
+    if(option === "add"){
+      card.style.display = 'block';
+    }else{
+      card.style.display = 'none';
+    }
+  };
+
+  //searching 
+  const searchInput = document.querySelector('.all-receivers-table-search-input');
+  searchInput.addEventListener('input', searchFunc);
+
+  function searchFunc() { 
+    const filter = searchInput.value.toLowerCase();
+    const itemList = document.querySelectorAll('.all-receivers-table-receiver');
+    itemList.forEach((item) => {
+      const textContent = item.innerText.replace('Add', '').replace('Remove', '');
+      if(textContent.toLowerCase().includes(filter)){
+        item.style.display = '';
+      }else{
+        item.style.display = 'none';
+      }
+    });
+  };
+
+
+
+  // LETTER SECTION
+  // adding "Changable fields:" on fly. Select from "letter text" textarea
+  const letterChangablefields = document.querySelector('#letter-changable-fields-list');
+  const letterTextInput = document.querySelector('.addLetter-textarea');
+  const receiversCards = document.querySelectorAll('.added-receiver-card'); 
+
+  letterTextInput.addEventListener('input', () => {
+    const text = document.querySelector('.addLetter-textarea').value;
+    updateChangableFields(text);
+    updateLetterTextForEveryReceiverCard(receiversCards, text); //new 
+  });
+
+  function onlyUnique(value, index, array) {
+    return array.indexOf(value) === index;
+  };
+
+  function updateChangableFields(text) {
+    const allFieldsArr = text.match(/<([^>]+)>/g);
+    if(allFieldsArr){
+      const fieldsArray = allFieldsArr.filter(onlyUnique);
+      if(fieldsArray.includes('<name>')){
+        fieldsArray.splice(fieldsArray.indexOf('<name>'), 1);
+      }
+      if(fieldsArray.length > 0){
+        let fieldsInnerHtmlForLetter = '<li class="list-group-item disabled">&ltname&gt</li>';
+        let fieldsInnerHtmlForReceiver; 
+        const fieldsArrForInnerHtml = fieldsArray.map(el => el.replace(/<|>/g, ''))
+        fieldsArrForInnerHtml.forEach((field) => {
+          fieldsInnerHtmlForLetter += `<li class="list-group-item">&lt${field}&gt</li>`;
+          fieldsInnerHtmlForReceiver += `
+            <li class="list-group-item">
+              <label class="form-label">${field}</label>
+              <input class="form-control form-control-sm" type="text" name="${field}" aria-label=".form-control-sm example">
+            </li>
+            ` 
+        });
+        letterChangablefields.innerHTML = fieldsInnerHtmlForLetter;
+        updateChangableFieldsForEveryReceiverCard(receiversCards, fieldsInnerHtmlForReceiver); 
+      }else{
+        letterChangablefields.innerHTML = '<li class="list-group-item disabled">&ltname&gt</li>';
+        updateChangableFieldsForEveryReceiverCard(receiversCards); 
+      }
+    }else{
+      letterChangablefields.innerHTML = '<li class="list-group-item disabled">&ltname&gt</li>';
+      updateChangableFieldsForEveryReceiverCard(receiversCards); 
+    }
+  };
+
+  function updateChangableFieldsForEveryReceiverCard(cardsArr, listItems) {
+    cardsArr.forEach((card) => {
+      const cardUl = card.children[0].children[4];
+      const cardUlLable = card.children[0].children[3];
+      if(!listItems || listItems === undefined){
+        cardUlLable.style.display = 'none';
+        cardUl.style.display = 'none';
+        return;
+      }
+      const listItemsWithoutUndefined = listItems.replace('undefined\n', '')
+      cardUlLable.style.display = 'block';
+      cardUl.style.display = 'block';
+      cardUl.innerHTML = listItemsWithoutUndefined;
+    });
+  };
+
+  function updateLetterTextForEveryReceiverCard(cardsArr, rowText) {
+    cardsArr.forEach((card) => {
+      const cardPlaceForText = card.children[0].children[2].children[1].children[0];
+      const cardChangableFieldsListItems = [...card.children[0].children[4].children]; //becouse HTML collection is not JS array
+      
+      cardChangableFieldsListItems.forEach((li) => {
+        console.log(li.children[1].innerText);
+      })
+    });
+    
+  };
+
+</script>
