@@ -31,3 +31,8 @@ exports.getAddLetter = async (req, res) => {
     });
   }
 };
+
+exports.addLetter = async (req, res) => {
+  console.log(req.body);
+  res.send('added');
+};

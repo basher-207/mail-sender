@@ -166,7 +166,7 @@ ul{
 
 
 /* TEMPLATE CREATION /letters/add route */
-
+/* all receivers */
 .all-receivers-top-tab {
   display: flex;
   justify-content: space-between;
@@ -176,10 +176,21 @@ ul{
   width: 25vw;
 }
 
+.addLetter-all-receivers-buttons-div {
+  display: flex;
+  gap: 1rem;
+}
+
+/* letter */
+.addLetter-textarea {
+  resize: none;
+}
+
+
+/* selected receivers */
 .added-receiver-card {
   background-color: #F3EEEA;
   margin-bottom: 1rem;
-  display: none;
 }
 
 #create-template-button {
@@ -188,9 +199,7 @@ ul{
 
 
 
-.addLetter-textarea {
-  resize: none;
-}
+
 
 
 
