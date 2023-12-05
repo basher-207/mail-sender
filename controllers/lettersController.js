@@ -33,6 +33,26 @@ exports.getAddLetter = async (req, res) => {
 };
 
 exports.addLetter = async (req, res) => {
-  console.log(req.body);
+  const {templateName, rowMessage, _id, name, email, receiverLetterText, ...changableFields} = req.body;
+  
+  if(!templateName || !rowMessage || !_id || !name || !email){
+    res.status(400).json({
+      status: 'fail',
+      message: 'You have to specified all nececary fields (templateName, message, _id, email)'
+    });
+    return;
+  }
+
+
+  console.log({
+    templateName,
+    rowMessage,
+    _id,
+    name,
+    email,
+    receiverLetterText,
+    changableFields
+  });
+  
   res.send('added');
 };
