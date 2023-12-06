@@ -31,9 +31,8 @@
               <div class="container receivers-table-container-in-template-card">
                 <table class="table table-primary table-hover table-sm receivers-table-letters-card">
                   <tbody>
-                    <% const templateReceiversArr = template.interjectionsPersonalized; %>
-                    <% templateReceiversArr.forEach((receiverInfo) => { %>
-                      <% const receiver =  receiverInfo.receiver %>
+                    <% template.personalizedLetters.forEach((letterInfo) => { %>
+                      <% const receiver =  letterInfo.receiver %>
                       <tr class="receiver">
                         <td class="table-primary"><%= receiver.name %></td>
                         <td class="table-primary"><%= receiver.email %></td>

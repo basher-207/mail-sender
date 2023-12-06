@@ -1,23 +1,27 @@
 const mongoose = require('mongoose');
 
-const personalizedInterjectionsSchema = new mongoose.Schema({
-  name: {
+const personalizedChangableFieldsSchema = new mongoose.Schema({
+  fieldName: {
     type: String,
     required: true,
   },
-  changedText: {
+  fieldValue: {
     type: String
   }
 },{
   _id: false
 });
 
-const interjectionsPersonalizedSchema = new mongoose.Schema({
+const personalizedLettersSchema = new mongoose.Schema({
   receiver: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Receiver',
   },
-  interjections: [ personalizedInterjectionsSchema ]
+  letterText: {
+    type: String,
+    required: true
+  },
+  changableFields: [ personalizedChangableFieldsSchema ]
 },{
   _id: false
 });
@@ -32,39 +36,8 @@ const letterSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  interjectionsList: [{ type: String }],
-  interjectionsPersonalized: [ interjectionsPersonalizedSchema ]
+  personalizedLetters: [personalizedLettersSchema]
 });
-
-
-
-// const letterSchema = new mongoose.Schema({
-//   name: {
-//     type: String,
-//     required: [true, 'Letter template name is required'],
-//     trim: true
-//   },
-//   letterTextRow: {
-//     type: String,
-//     required: true
-//   },
-//   interjectionsList: [{ type: String }],
-//   interjectionsPersonalized: [{
-//     receiver: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: 'Receiver',
-//     },
-//     interjections: [{
-//       name: {
-//         type: String,
-//         required: true,
-//       },
-//       changedText: {
-//         type: String
-//       }
-//     }]
-//   }]
-// });
 
 const Letter = mongoose.model('Letter', letterSchema);
 
