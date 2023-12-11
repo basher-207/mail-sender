@@ -8,6 +8,9 @@ router.route('/')
 
 router.route('/add')
   .get(controller.getAddLetter)
-  .post(controller.addLetter);
+  .post(controller.addLetter)
+
+router.route('/:id')
+  .get(controller.getLetterById)
 
 module.exports = router;

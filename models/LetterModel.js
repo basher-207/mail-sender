@@ -36,6 +36,7 @@ const letterSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  changableFieldsList: [ String ],
   personalizedLetters: [personalizedLettersSchema]
 });
 

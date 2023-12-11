@@ -16,6 +16,7 @@ body{
 }
 
 section{
+  min-height: 75vh;
   padding: 0 10vw;
 }
 
@@ -23,6 +24,15 @@ header {
   padding: 3rem 10vw 2rem;
   display: flex;
   justify-content: space-between;
+}
+
+footer{
+  text-align: center;
+  margin: 2rem auto 0.5rem;
+}
+
+footer .footer-p {
+  color: #B0A695;
 }
 
 a {
@@ -198,6 +208,17 @@ ul{
 }
 
 
+/* TEMPLATE BY ID /letters/:id route */
+#letterById-table-container {
+  margin-top: 1rem;
+  max-height: 30rem;
+  overflow: scroll;
+}
+
+#letterById-buttons-container {
+  display: flex;
+  gap: 2rem;
+}
 
 
 

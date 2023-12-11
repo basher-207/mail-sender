@@ -13,8 +13,6 @@ exports.getLetters = async (req, res) => {
       select: 'name email'
     }).lean();
 
-    console.log(util.inspect(letterTemplates, {showHidden: false, depth: null, colors: true}));
-
     res.render(ejsPath, { letterTemplates });
   } catch (error) {
     res.status(500).json({
@@ -39,7 +37,7 @@ exports.getAddLetter = async (req, res) => {
 
 exports.addLetter = async (req, res) => {
   try{
-    const {templateName, rowMessage, _id, name, email, receiverLetterText, ...changableFields} = req.body;
+    const {templateName, rowMessage, _id, name, email, receiverLetterText, changableFieldsList, ...changableFields} = req.body;
     if(!templateName || !rowMessage || !_id || !name || !email){
       res.status(400).json({
         status: 'fail',
@@ -59,7 +57,7 @@ exports.addLetter = async (req, res) => {
       return;
     }
 
-    const letter = new rowLetter(templateName, rowMessage, _id, receiverLetterText, changableFields);
+    const letter = new rowLetter(templateName, rowMessage, changableFieldsList, _id, receiverLetterText, changableFields);
     const letterTemplateStructured = letter.getletterTemplateStructure();
     
     const letterTemplate = new Letter(letterTemplateStructured);
@@ -70,6 +68,30 @@ exports.addLetter = async (req, res) => {
     res.status(500).json({
       status: 'fail',
       message: error.message
+    });
+  }
+};
+
+exports.getLetterById = async (req, res) => {
+  try {
+    const letter = await Letter.findById(req.params.id).populate({
+      path: 'personalizedLetters.receiver',
+      select: 'name email'
+    }).lean();
+    if(letter === null){
+      res.status(404).json({
+        status: 'fail',
+        message: 'Letter template with that ID not found'
+      });
+      return;
+    }
+    // console.log(util.inspect(letter, {showHidden: false, depth: null, colors: true}));
+    
+    res.render(ejsPath + '/letterById', { template:  letter });
+  } catch (error) {
+    res.status(500).json({
+      status: 'fail',
+      message: 'Wrong ID input, letter can not be found'
     });
   }
 };

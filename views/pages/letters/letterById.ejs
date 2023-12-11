@@ -1,0 +1,90 @@
+<section>
+  <h1 class="headline-text"><%= template.name %></h1>
+
+  <!-- Letter section -->
+  <div class="container">
+    <h5>Letter</h5>
+    <div class="row row-cols-2">
+      <!-- letter text -->
+      <div class="col-8">
+        <textarea class="form-control addLetter-textarea" id="floatingTextarea2" name="rowMessage" style="height: 25rem;" readonly><%- template.letterTextRow %></textarea>
+      </div>
+      <!-- changeble fields -->
+      <div class="col-4">
+        <div class="card">
+          <div class="card-header">
+            Changable fields:
+          </div>
+          <ul id="letter-changable-fields-list" class="list-group list-group-flush">
+            <% template.changableFieldsList.forEach((field) => { %>
+              <li class="list-group-item disabled"><%= field %></li>
+            <% }); %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Receivers section -->
+  <div class="container" style="margin-top: 2rem;">
+    <h5>Receivers</h5>
+    <!--seacrh input -->
+    <input class="form-control me-2 all-receivers-table-search-input" id="searchInput" type="text" name="searchInput" placeholder="Search" style="width: 20vw;">
+    <div class="row row-cols-2">
+      <!-- receivers table  -->
+      <div id="letterById-table-container" class="col">
+        <table id="letterById-table" class="table table-primary table-hover" style="margin-top: 0;">
+          <tbody>
+            <% template.personalizedLetters.forEach((receiverObj) => { %>
+            <tr class="receiver all-receivers-table-receiver receivers-table-item">
+              <td class="table-primary"><button type="button" class="btn btn-primary btn-sm letterById-show-letter-button" onclick="shoeReceiverLetter(`<%- receiverObj.letterText %>`)" >Show Letter</button></td>
+              <td class="table-primary td-serachable"><%= receiverObj.receiver.name %></td>
+              <td class="table-primary td-serachable"><%= receiverObj.receiver.email %></td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+      <!-- receiver letter -->
+      <div class="col">
+        <textarea class="form-control addLetter-textarea" id="receiverLetterTextarea" name="rowMessage" style="height: 20rem; margin-top: 1rem;" readonly></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div id="letterById-buttons-container">
+    <button type="button" class="btn btn-success">Send letter</button>
+    <button type="button" class="btn btn-warning">Edit template</button>
+    <button type="button" class="btn btn-danger">Delete template</button>
+  </div>
+
+  
+
+
+</section>
+
+
+<script>
+  //showing receiver personalized letter
+  const textareaForReceiverLetterText = document.querySelector('#receiverLetterTextarea');
+  function shoeReceiverLetter(receiverLetterText) {
+    textareaForReceiverLetterText.innerHTML = receiverLetterText;
+  };
+  //searching on receivers list
+  document.querySelector('#searchInput').addEventListener('input', filterFunction);
+  function filterFunction() {
+    const filter = document.querySelector('#searchInput').value.toLowerCase();
+    const itemsList = document.querySelectorAll('.receivers-table-item');
+
+    itemsList.forEach((item) => {
+      const searchableFields = [...item.querySelectorAll('.td-serachable')];
+      const searchableValues = searchableFields.reduce((acc, cur) => acc + cur.innerText + ' ', '').toLowerCase();
+      if(searchableValues.includes(filter)){
+        item.style.display = '';
+      }else{
+        item.style.display = 'none';
+      }
+    });
+  };
+
+</script>

@@ -83,6 +83,7 @@
               </div>
             </div>
 
+            <input type="hidden" name="changableFieldsList">
             <button type="button" class="btn btn-success" onclick="addLetter(); addChangableFields()">Add letter</button>
 
           </div>
@@ -251,6 +252,7 @@
 
   //adding changable fields for every receiver in receiverList
   function addChangableFields() {
+    //adding changable fields to receivers cards
     const selectedReceiversPlacesForChangableFields = document.querySelectorAll('.addLetter-receiver-card-fields-ul');
     const selectedReceiversChangableFieldsLabels = document.querySelectorAll('.addLetter-receiver-card-fields-label');
     if(letterChangablefields.children.length === 1){
@@ -275,6 +277,12 @@
       place.style.display = 'block';
       place.innerHTML = changableFieldsHtml;
     });
+    
+    //adding changable fields names to hidden input
+    const hiddenInputForChangableFieldsList = document.querySelector('input[name=changableFieldsList]');
+    const changableFieldsUl = document.querySelector('#letter-changable-fields-list');
+    const changableFieldsNames = [...changableFieldsUl.children].map((li) => li.innerText);
+    hiddenInputForChangableFieldsList.value = changableFieldsNames;
   };
 
 
@@ -334,6 +342,7 @@
 
   //adding receiver personalized letter text to hidden input before sending
   function addFormHiddenInputs() {
+    // adding each card  personilized letter text to form hidden input 
     const selectedReceiversCards = document.querySelectorAll('.added-receiver-card');
     selectedReceiversCards.forEach((card) => {
       const receiverLetterText = card.querySelector('.addLetter-receiver-text').innerText;

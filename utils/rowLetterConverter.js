@@ -1,7 +1,8 @@
 class rowLetter {
-  constructor(name, messageRow, receiverIds, receiverMessages, fieldsObj){
+  constructor(name, messageRow, changableFieldsList, receiverIds, receiverMessages, fieldsObj){
     this.name = name;
     this.messageRow = messageRow;
+    this.changableFieldsList = changableFieldsList
     this.receiverIds = receiverIds;
     this.receiverMessages = receiverMessages;
     this.fieldsObj = fieldsObj;
@@ -30,6 +31,7 @@ class rowLetter {
     return {
       name: this.name,
       letterTextRow: this.messageRow,
+      changableFieldsList : this.changableFieldsList.split(','),
       personalizedLetters
     };
   };
