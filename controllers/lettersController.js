@@ -85,8 +85,6 @@ exports.getLetterById = async (req, res) => {
       });
       return;
     }
-    // console.log(util.inspect(letter, {showHidden: false, depth: null, colors: true}));
-    
     res.render(ejsPath + '/letterById', { template:  letter });
   } catch (error) {
     res.status(500).json({
@@ -100,8 +98,29 @@ exports.sendLetter = async (req, res) => {
   res.send('send letter!');
 };
 
-exports.getEditPageForLetterById = (req, res) => {
-  res.send('getEditPage');
+exports.getEditPageForLetterById = async (req, res) => {
+  const letterId = req.params.id;
+  try {
+    const receivers = await Receiver.find();
+    const letter = await Letter.findById(letterId).populate({
+      path:'personalizedLetters.receiver',
+      select: 'name email'
+    }).lean();
+    if(letter === null){
+      res.status(404).json({
+        status: 'fail',
+        message: 'Letter template with that ID not found'
+      });
+      return;
+    }
+    // console.log(util.inspect(letter, {showHidden: false, depth: null, colors: true}));
+    res.render(ejsPath + '/editLetter', { template: letter, receivers });
+  } catch (error) {
+    res.status(500).json({
+      status: 'fail',
+      message: 'Wrong ID input, letter can not be found'
+    });
+  }
 };
 
 exports.editLetterById = (req, res) => {
@@ -109,9 +128,9 @@ exports.editLetterById = (req, res) => {
 };
 
 exports.deleteLetterById = async (req, res) => {
-  const templateId = req.params.id;
+  const letterId = req.params.id;
   try {
-    await Letter.findByIdAndDelete(templateId);
+    await Letter.findByIdAndDelete(letterId);
     res.redirect('/letters');
   } catch (error) {
     res.status(500).json({
