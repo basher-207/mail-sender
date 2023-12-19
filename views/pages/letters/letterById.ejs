@@ -17,7 +17,11 @@
           </div>
           <ul id="letter-changable-fields-list" class="list-group list-group-flush">
             <% template.changableFieldsList.forEach((field) => { %>
-              <li class="list-group-item disabled"><%= field %></li>
+              <% if(field === '<name>'){ %>
+                <li class="list-group-item disabled"><%= field %></li>
+              <% }else{ %>
+                <li class="list-group-item"><%= field %></li>
+              <% } %>
             <% }); %>
           </ul>
         </div>
@@ -37,7 +41,7 @@
           <tbody>
             <% template.personalizedLetters.forEach((receiverObj) => { %>
             <tr class="receiver all-receivers-table-receiver receivers-table-item">
-              <td class="table-primary"><button type="button" class="btn btn-primary btn-sm letterById-show-letter-button" onclick="shoeReceiverLetter(`<%- receiverObj.letterText %>`)" >Show Letter</button></td>
+              <td class="table-primary"><button type="button" class="btn btn-primary btn-sm letterById-show-letter-button" onclick="showReceiverLetter(`<%- receiverObj.letterText %>`)" >Show Letter</button></td>
               <td class="table-primary td-serachable"><%= receiverObj.receiver.name %></td>
               <td class="table-primary td-serachable"><%= receiverObj.receiver.email %></td>
             </tr>
@@ -101,8 +105,9 @@
 <script>
   //showing receiver personalized letter
   const textareaForReceiverLetterText = document.querySelector('#receiverLetterTextarea');
-  function shoeReceiverLetter(receiverLetterText) {
-    textareaForReceiverLetterText.innerHTML = receiverLetterText;
+  function showReceiverLetter(receiverLetterText) {
+    const letterTextForShow = receiverLetterText.replace(/<br>/g, '\r\n');
+    textareaForReceiverLetterText.innerHTML = letterTextForShow;
   };
   //searching on receivers list
   document.querySelector('#searchInput').addEventListener('input', filterFunction);

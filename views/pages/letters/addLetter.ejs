@@ -258,26 +258,26 @@
     if(letterChangablefields.children.length === 1){
       selectedReceiversChangableFieldsLabels.forEach(label => label.style.display = 'none');
       selectedReceiversPlacesForChangableFields.forEach(place => place.style.display = 'none');
-      return
-    }
-    const changableFieldsArr = [...letterChangablefields.children].map(child => {
-      const name = child.innerHTML;
-      return `
-        <li class="list-group-item">
-          <label class="form-label">${name}</label>
-          <input class="form-control form-control-sm card-changable-field-input" type="text" name="${name}" aria-label=".form-control-sm example">
-        </li>
-      `;
-    });
-    const [_, ...changableFieldsArrWithoutName] = changableFieldsArr;
-    const changableFieldsHtml = changableFieldsArrWithoutName.reduce((acc, cur) => acc + cur, '');
+    }else{
+      const changableFieldsArr = [...letterChangablefields.children].map(child => {
+        const name = child.innerHTML;
+        return `
+          <li class="list-group-item">
+            <label class="form-label">${name}</label>
+            <input class="form-control form-control-sm card-changable-field-input" type="text" name="${name}" aria-label=".form-control-sm example">
+          </li>
+        `;
+      });
+      const [_, ...changableFieldsArrWithoutName] = changableFieldsArr;
+      const changableFieldsHtml = changableFieldsArrWithoutName.reduce((acc, cur) => acc + cur, '');
 
-    selectedReceiversChangableFieldsLabels.forEach(label => label.style.display = 'block');
-    selectedReceiversPlacesForChangableFields.forEach(place => {
-      place.style.display = 'block';
-      place.innerHTML = changableFieldsHtml;
-    });
-    
+      selectedReceiversChangableFieldsLabels.forEach(label => label.style.display = 'block');
+      selectedReceiversPlacesForChangableFields.forEach(place => {
+        place.style.display = 'block';
+        place.innerHTML = changableFieldsHtml;
+      });
+    }
+
     //adding changable fields names to hidden input
     const hiddenInputForChangableFieldsList = document.querySelector('input[name=changableFieldsList]');
     const changableFieldsUl = document.querySelector('#letter-changable-fields-list');
@@ -345,7 +345,7 @@
     // adding each card  personilized letter text to form hidden input 
     const selectedReceiversCards = document.querySelectorAll('.added-receiver-card');
     selectedReceiversCards.forEach((card) => {
-      const receiverLetterText = card.querySelector('.addLetter-receiver-text').innerText;
+      const receiverLetterText = card.querySelector('.addLetter-receiver-text').innerHTML;
       const hiddenInputForLetterText = card.querySelector('input[name=receiverLetterText]');
       hiddenInputForLetterText.value = receiverLetterText;
     });
