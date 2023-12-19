@@ -53,13 +53,47 @@
   </div>
 
   <div id="letterById-buttons-container">
-    <button type="button" class="btn btn-success">Send letter</button>
-    <button type="button" class="btn btn-warning">Edit template</button>
-    <button type="button" class="btn btn-danger">Delete template</button>
+    <form id="sendForm" action="<%= template._id %>/send" method="post">
+      <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Send letter</button>
+    </form>
+    <form action="<%= template._id %>/edit" method="get">
+      <button type="submit" class="btn btn-warning">Edit template</button>
+    </form>
+    <form id="deleteForm" action="<%= template._id %>/delete" method="post">
+      <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdropDelete">Delete template</button>
+    </form>
   </div>
 
-  
 
+  <!-- Send Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Are you sure you want to send this email template to all recipients?</h1>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" form="sendForm" class="btn btn-success">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div class="modal fade" id="staticBackdropDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Are you sure you want to delete this email template?</h1>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" form="deleteForm" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </section>
 

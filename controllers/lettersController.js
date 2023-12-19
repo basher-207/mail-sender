@@ -95,3 +95,28 @@ exports.getLetterById = async (req, res) => {
     });
   }
 };
+
+exports.sendLetter = async (req, res) => {
+  res.send('send letter!');
+};
+
+exports.getEditPageForLetterById = (req, res) => {
+  res.send('getEditPage');
+};
+
+exports.editLetterById = (req, res) => {
+  res.send('editing....');
+};
+
+exports.deleteLetterById = async (req, res) => {
+  const templateId = req.params.id;
+  try {
+    await Letter.findByIdAndDelete(templateId);
+    res.redirect('/letters');
+  } catch (error) {
+    res.status(500).json({
+      status: 'fail',
+      message: 'Wrong ID input, letter can not be found and deleted'
+    });
+  }
+}

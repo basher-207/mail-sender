@@ -13,4 +13,12 @@ router.route('/add')
 router.route('/:id')
   .get(controller.getLetterById)
 
+router.route('/:id/send')
+  .post(controller.sendLetter)
+router.route('/:id/edit')
+  .get(controller.getEditPageForLetterById)
+  .post(controller.editLetterById)
+router.route('/:id/delete')
+  .post(controller.deleteLetterById)
+  
 module.exports = router;
