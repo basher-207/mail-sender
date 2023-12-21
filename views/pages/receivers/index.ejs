@@ -3,8 +3,7 @@
 
   <div class="receivers-top-tab">
     <div class="receivers-buttons">
-      <a class="btn btn-primary" href="/receivers/add">Add new receivers</a>
-      <button class="btn btn-danger" type="submit" form="receivers-form">Delete</button>
+      <a class="btn btn-primary" href="/receivers/add">Add new receiver</a>
     </div>
     <div class="receivers-buttons">
       <input class="form-control me-2" id="searchInput" type="text" name="searchInput" placeholder="Search">
@@ -19,15 +18,15 @@
   <% }else{ %>
 
   <form id="receivers-form" action="/receivers" method="post">
+    <input type="hidden" name="receiverId">
 
     <table class="table table-primary table-hover">
       <tbody>
         <% receiversList.forEach((receiver) => { %>
         <tr class="receiver">
-          <td class="table-primary"><input class="form-check-input" type="checkbox" name="receiverId" value=<%= receiver._id %> ></td> 
-          <td class="table-primary"><%= receiver.name %></td>
+          <td class="table-primary" style="padding-left: 1rem;"><%= receiver.name %></td>
           <td class="table-primary"><%= receiver.email %></td>
-          <td class="table-primary last-element"><a href="/receivers/<%= receiver._id %>">edit</a></td>
+          <td class="table-primary last-element"><a href="/receivers/<%= receiver._id %>" style="margin-right: 1rem;">edit</a><button id="<%= receiver._id %>" name="deleteButton" type="button" class="btn btn-danger btn-sm">Delete</button></td>
         </tr>
         <% }); %>
       </tbody>
@@ -58,18 +57,15 @@
     });
   };
 
-  // Deleting button arise
-  document.querySelector('#receivers-form').addEventListener('click', checkboxFunc)
-  const checboxsCount = document.querySelectorAll('input[type=receivers-form]').length;
-  const deleteButton = document.querySelector('button.btn-danger');
-
-  function checkboxFunc() {
-    const checkedCheckboxesCount = document.querySelectorAll('input[type=checkbox]:checked').length;
-    if(checkedCheckboxesCount != 0){
-      deleteButton.style.display = 'block';
-    }else{
-      deleteButton.style.display = 'none';
+  //delete receiver
+  const table = document.querySelector('table');
+  const hiddentInputIdToDelete = document.querySelector('input[name=receiverId]');
+  const form = document.querySelector('form[id=receivers-form]');
+  table.addEventListener('click', (event) => {
+    if(event.target.name === 'deleteButton'){
+      hiddentInputIdToDelete.value = event.target.id;
+      form.submit();
     }
-  };
+  });
 
 </script>

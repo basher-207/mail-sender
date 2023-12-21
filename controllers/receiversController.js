@@ -20,23 +20,20 @@ exports.getReceivers = async (req, res) => {
 // POST /receivers 
 // deleting selected receivers
 exports.deleteReceivers = async (req, res) => {
-  receiversIdsToDelete = req.body.receiverId;
-  if(!receiversIdsToDelete){
+  receiverIdToDelete = req.body.receiverId; //receiversIdsToDelete
+  if(!receiverIdToDelete){
     res.redirect('/receivers');
   }else{
     try {
-      // delete receivers from letter template relation
-      const receiversToDelete = await Receiver.find({ _id: {$in: receiversIdsToDelete}});
-      receiversToDelete.forEach((receiver) => {
-        receiver.lettersTemplates.forEach(async (letterId) => {
-          const letter = await Letter.findById(letterId.toString());
-          const index = letter.personalizedLetters.findIndex((receiverInfo) =>  receiverInfo.receiver.toString() === receiver._id.toString());
-          letter.personalizedLetters.splice(index, 1);
-          letter.save();
-        })
+      const deletedReceiver = await Receiver.findByIdAndDelete(receiverIdToDelete);
+      // delete receiver from letter template relation
+      deletedReceiver.lettersTemplates.forEach(async (letterId) => {
+        const letter = await Letter.findById(letterId.toString());
+        const index = letter.personalizedLetters.findIndex((receiverInfo) => receiverInfo.receiver.toString() === deletedReceiver._id.toString());
+        letter.personalizedLetters.splice(index, 1);
+        letter.save();
       });
 
-      await Receiver.deleteMany({ _id: {$in: receiversIdsToDelete}});
       res.redirect('/receivers');
     } catch (error) {
       res.status(500).json({
