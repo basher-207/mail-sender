@@ -94,7 +94,8 @@
             </div>
 
             <input type="hidden" name="changableFieldsList">
-            <button type="button" class="btn btn-success" onclick="addLetterDataToReceiversCards();">Update letter</button>
+            <!-- <button type="button" class="btn btn-success" onclick="addLetterDataToReceiversCards();">Update letter</button> -->
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateReceiversCardsLetterText">Update letter</button>
 
           </div>
         </div>
@@ -119,15 +120,30 @@
 
   <!-- POPUPS -->
   <!-- Update selected receivers list Modal -->
-  <div class="modal fade" id="updateSelectedReceiversList" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal fade" id="updateSelectedReceiversList" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Updating this list will update the email text for each recipient and reset all changable fields</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Updating this list will update the email text for each recipient and reset all changable fields</h1>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-success" onclick="addSelectedToReceiversList(); addLetterDataToReceiversCards();">Update selected receivers list</button>
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="addSelectedToReceiversList(); addLetterDataToReceiversCards();">Update selected receivers list</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update receivers cards letter text Modal -->
+  <div class="modal fade" id="updateReceiversCardsLetterText" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Updating Letter text will update the letter text for each recipient and reset all changable fields</h1>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="addLetterDataToReceiversCards();">Update letter</button>
         </div>
       </div>
     </div>
@@ -149,35 +165,6 @@
   </div>
 
 </section>
-
-
-<!-- {
-  _id: new ObjectId('6581abfff131b0a5cf9f309a'),
-  name: 'ggggg',
-  letterTextRow: '<gr>',
-  changableFieldsList: [ '<name>', '<gr>' ],
-  personalizedLetters: [
-    {
-      receiver: {
-        _id: new ObjectId('656871c86883478103f327ab'),
-        name: 'Vladyslav',
-        email: 'basher207vd@gmail.com'
-      },
-      letterText: 'ddd',
-      changableFields: [ { fieldName: '<gr>', fieldValue: 'ddd' } ]
-    },
-    {
-      receiver: {
-        _id: new ObjectId('6568dac92ad35de30592b301'),
-        name: 'bob',
-        email: 'hor344@email.com'
-      },
-      letterText: '&lt;gr&gt;',
-      changableFields: [ { fieldName: '<gr>', fieldValue: '' } ]
-    }
-  ],
-  __v: 0
-} -->
 
 <script>
   // SETTING SPECIFIED WHEN PAGE IS LOADED ____________________________________________________________________________________________
@@ -494,8 +481,5 @@
     const form = document.querySelector('#addLetterForm');
     form.submit();
   };
-
-
-  // POPUPS ____________________________________________________________________________________________
-
+  
 </script>
