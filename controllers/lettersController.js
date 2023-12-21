@@ -123,8 +123,41 @@ exports.getEditPageForLetterById = async (req, res) => {
   }
 };
 
-exports.editLetterById = (req, res) => {
-  res.send('editing....');
+exports.editLetterById = async (req, res) => {
+  try {
+    const templateId = req.params.id;
+    const {templateName, rowMessage, _id, name, email, receiverLetterText, changableFieldsList, ...changableFields} = req.body;
+    const idsLength = _id.length;
+    const namesLength = name.length;
+    const emailLength = email.length;
+    const receiverLetterTextLength = receiverLetterText.length;
+
+    if(!templateName || !rowMessage || !_id || !name || !email){
+      res.status(400).json({
+        status: 'fail',
+        message: 'You have to specified all necessary fields (templateName, message, _id, email)'
+      });
+      return;
+    }
+    if(!(idsLength === namesLength && namesLength === emailLength && emailLength === receiverLetterTextLength)){
+      res.status(400).json({
+        status: 'fail',
+        message: 'Unexpected inputs'
+      });
+      return;
+    }
+
+    const letter = new rowLetter(templateName, rowMessage, changableFieldsList, _id, receiverLetterText, changableFields);
+    const letterTemplateStructured = letter.getletterTemplateStructure();
+
+    await Letter.findByIdAndUpdate(templateId, letterTemplateStructured);
+    res.redirect('/letters');
+  } catch (error) {
+    res.status(500).json({
+      status: 'fail',
+      message: error.message
+    });
+  }
 };
 
 exports.deleteLetterById = async (req, res) => {

@@ -22,7 +22,7 @@
           <!-- top tab with select "select all" button and seacrh input -->
           <div class="all-receivers-top-tab">
             <div class="addLetter-all-receivers-buttons-div">
-              <button type="button" class="btn btn-success" onclick="addSelectedToReceiversList()">Add selected to receivers list</button>
+              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateSelectedReceiversList">Update selected receivers list</button>
             </div>
             <div class="addLetter-all-receivers-buttons-div">
               <button type="button" class="btn btn-secondary" onclick="resetReceiversSelection()">Reset selection</button>
@@ -57,60 +57,97 @@
       </div>
     </div>
 
-    <!-- Letter settings -->
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-          Letter
-        </button>
-      </h2>
-      <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
-        <div class="accordion-body">
+    <form action="/letters/<%= template._id %>/edit" method="post" id="addLetterForm">
 
-          <div class="container">
-            <div class="row row-cols-2">
-              <!-- letter text -->
-              <div class="col-8">
-                <div class="form-floating">
-                  <textarea class="form-control addLetter-textarea" placeholder="Leave a comment here" id="floatingTextarea2" name="rowMessage" style="height: 20rem"><%= template.letterTextRow %></textarea>
-                  <label for="floatingTextarea2">Letter text</label>
-                </div>
-              </div>
-              <!-- changeble fields -->
-              <div class="col-4">
-                <div class="card">
-                  <div class="card-header">
-                    Changable fields:
+      <!-- Letter settings -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+            Letter
+          </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+          <div class="accordion-body">
+
+            <div class="container">
+              <div class="row row-cols-2">
+                <!-- letter text -->
+                <div class="col-8">
+                  <div class="form-floating">
+                    <textarea class="form-control addLetter-textarea" placeholder="Leave a comment here" id="floatingTextarea2" name="rowMessage" style="height: 20rem"><%= template.letterTextRow %></textarea>
+                    <label for="floatingTextarea2">Letter text</label>
                   </div>
-                  <ul id="letter-changable-fields-list" class="list-group list-group-flush">
-                    <!-- name field by default -->
-                    <li class="list-group-item disabled">&ltname&gt</li>
-                  </ul>
+                </div>
+                <!-- changeble fields -->
+                <div class="col-4">
+                  <div class="card">
+                    <div class="card-header">
+                      Changable fields:
+                    </div>
+                    <ul id="letter-changable-fields-list" class="list-group list-group-flush">
+                      <!-- name field by default -->
+                      <li class="list-group-item disabled">&ltname&gt</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
+
+            <input type="hidden" name="changableFieldsList">
+            <button type="button" class="btn btn-success" onclick="addLetterDataToReceiversCards();">Update letter</button>
+
           </div>
+        </div>
+      </div>
 
-          <input type="hidden" name="changableFieldsList">
-          <button type="button" class="btn btn-success" onclick="addLetter(); addChangableFields()">Add letter</button>
+      <!-- Selected receivers settings -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-selectedReceivers" aria-expanded="false" aria-controls="panelsStayOpen-selectedReceivers">
+            Selected receivers list
+          </button>
+        </h2>
+        <div id="panelsStayOpen-selectedReceivers" class="accordion-collapse collapse">
+          <div id="selected-receivers-div" class="accordion-body"></div>
+        </div>
+      </div>
 
+    </form>
+  </div>
+  <!-- Update button -->
+  <button id="create-template-button" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateTemplate" disabled>Update letter template</button>
+
+  <!-- POPUPS -->
+  <!-- Update selected receivers list Modal -->
+  <div class="modal fade" id="updateSelectedReceiversList" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Updating this list will update the email text for each recipient and reset all changable fields</h1>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" onclick="addSelectedToReceiversList(); addLetterDataToReceiversCards();">Update selected receivers list</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Selected receivers settings -->
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-selectedReceivers" aria-expanded="false" aria-controls="panelsStayOpen-selectedReceivers">
-          Selected receivers list
-        </button>
-      </h2>
-      <div id="panelsStayOpen-selectedReceivers" class="accordion-collapse collapse">
-        <div id="selected-receivers-div" class="accordion-body"></div>
+  <!-- Update template Modal -->
+  <div class="modal fade" id="updateTemplate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Are you sure you want to update the letter template with new data?</h1>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success" onclick="addFormHiddenInputs(); sendForm();">Update template</button>
+        </div>
       </div>
     </div>
-  
   </div>
+
 </section>
 
 
@@ -143,7 +180,50 @@
 } -->
 
 <script>
-// ALL RECEIVERS SECTION
+  // SETTING SPECIFIED WHEN PAGE IS LOADED ____________________________________________________________________________________________
+  window.onload = () => {
+    addSelectedToReceiversList(); //add receivers cards to selected receivers list
+    updateChangableFields(); //update changable fields in letter section when page is loaded first time
+    addLetterDataToReceiversCards(); // updating receivers cards with letter text and changable fields inputs
+    addchangableFieldsValuesToReceiverCards(); //add for each receiver card changable fields vallues
+    updateReceiversCardsLetterText(); //update receiver card letter text with changable fields values
+  };
+
+  function updateReceiversCardsLetterText() {
+    const receiversCards = document.querySelectorAll('.card.added-receiver-card');
+    receiversCards.forEach((card) => {
+      const firstInput = card.querySelector('.card-changable-field-input');
+      firstInput.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+  };
+  
+  //add for each receiver card changable fields values
+  function addchangableFieldsValuesToReceiverCards() {
+    const specifiedReceiversCards = JSON.parse(`<%- JSON.stringify(template.personalizedLetters) %>`);
+    const receiversCards = document.querySelectorAll('.card.added-receiver-card');
+    receiversCards.forEach((card) => {
+      const receiverId = card.querySelector('input[name=_id]').value;
+      const cardChangableInputs = card.querySelectorAll('.card-changable-field-input');
+      cardChangableInputs.forEach((changableInput) => setChangableInputValue(changableInput, receiverId, specifiedReceiversCards));
+    });
+  };
+
+  function setChangableInputValue(input, receiverId, specifiedReceiversCards) {
+    const searchableInputName = input.name;
+    const templateReceiverCard = specifiedReceiversCards.find((card) => card.receiver._id === receiverId);
+    if(templateReceiverCard === undefined){
+      return;
+    }
+    try {
+      const templateReceiverInputValue = templateReceiverCard.changableFields.find((field) => field.fieldName === searchableInputName).fieldValue;
+      input.value = templateReceiverInputValue;
+    } catch (error) {
+      input.value = "";
+    }
+  };
+
+
+  // ALL RECEIVERS SECTION ____________________________________________________________________________________________
   //searching 
   const searchInput = document.querySelector('.all-receivers-table-search-input');
   searchInput.addEventListener('input', searchFunc);
@@ -199,15 +279,57 @@
     });
   };
 
+  function addSelectedToReceiversList() {
+    const placeForSelectedReceivers = document.querySelector('#selected-receivers-div'); //place where put selected receivers
+    const selectedChecboxes = [...document.querySelectorAll('.all-receivers-table-receiver .form-check-input:checked')]; //transform html collection to js array
+    const selectedReceiversHtmlArr = selectedChecboxes.map((receiver) => {
+      const receiverInformation = receiver.value.split(',');
+      const receiverObj = { 
+        _id: receiverInformation[0],
+        name: receiverInformation[1],
+        email: receiverInformation[2]
+      };
+      return `
+        <div class="card added-receiver-card" >
+          <div class="card-body">
 
-  // LETTER SECTION
+            <!-- receiver info -->
+            <h5 class="card-title">${receiverObj.name}</h5>
+            <h6 class="card-subtitle mb-2 text-body-secondary">${receiverObj.email}</h6>
+
+            <!-- letter text for current receiver -->
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#a${receiverObj._id}" aria-expanded="false" aria-controls="flush-collapseOne">
+                  Letter text
+                </button>
+              </h2>
+              <div id="a${receiverObj._id}" class="accordion-collapse collapse" >
+                <div class="accordion-body addLetter-receiver-text"></div>
+              </div>
+            </div>
+
+            <!-- changable fields -->
+            <label class="form-label addLetter-receiver-card-fields-label" style="margin-top: 1rem; display: none;">Changable fields:</label>
+            <ul class="list-group addLetter-receiver-card-fields-ul" style="display: none;"></ul>
+
+            <input type="hidden" name="_id" value="${receiverObj._id}">
+            <input type="hidden" name="name" value="${receiverObj.name}">
+            <input type="hidden" name="email" value="${receiverObj.email}">
+            <input type="hidden" name="receiverLetterText">
+
+          </div>
+        </div>
+      `;
+    });
+    const selectedReceiversHtml = selectedReceiversHtmlArr.reduce((acc, cur) => acc + cur, '');
+    placeForSelectedReceivers.innerHTML = selectedReceiversHtml;
+  };
+
+
+  // LETTER SECTION ____________________________________________________________________________________________
   const letterChangablefields = document.querySelector('#letter-changable-fields-list');
   const letterTextInput = document.querySelector('.addLetter-textarea');
-
-  //updating changable fields in letter section when page is loaded first time
-  window.onload = () => {
-    updateChangableFields();
-  };
   
   // adding "Changable fields:" on fly. Select from "letter text" textarea
   letterTextInput.addEventListener('input', () => {
@@ -240,5 +362,140 @@
       letterChangablefields.innerHTML = '<li class="list-group-item disabled">&ltname&gt</li>';
     }
   };
+
+  // updating receivers cards with letter text and changable fields inputs
+  function addLetterDataToReceiversCards() {
+    addLetter();
+    addChangableFields();
+    addchangableFieldsValuesToReceiverCards();
+    updateReceiversCardsLetterText();
+  };
+
+  //adding letter for every receiver in receiverList
+  function addLetter() {
+    const selectedReceiversCards = document.querySelectorAll('.card.added-receiver-card');
+    const text = document.querySelector('.addLetter-textarea').value;
+    selectedReceiversCards.forEach((card) => {
+      const placeForCurrentReceiverLetterText = card.querySelector('.addLetter-receiver-text');
+      if(text.includes('<name>')){
+        const receiverName = card.children[0].children[0].textContent;
+        placeForCurrentReceiverLetterText.innerText = text.replace(/<name>/g, receiverName);
+      }else{
+        placeForCurrentReceiverLetterText.innerText = text;
+      }
+    });
+  };
+
+  //adding changable fields for every receiver in receiverList
+  function addChangableFields() {
+    const selectedReceiversPlacesForChangableFields = document.querySelectorAll('.addLetter-receiver-card-fields-ul');
+    const selectedReceiversChangableFieldsLabels = document.querySelectorAll('.addLetter-receiver-card-fields-label');
+    if(letterChangablefields.children.length === 1){
+      selectedReceiversChangableFieldsLabels.forEach(label => label.style.display = 'none');
+      selectedReceiversPlacesForChangableFields.forEach(place => place.style.display = 'none');
+    }else{
+      const changableFieldsArr = [...letterChangablefields.children].map(child => {
+        const name = child.innerHTML;
+        return `
+          <li class="list-group-item">
+            <label class="form-label">${name}</label>
+            <input class="form-control form-control-sm card-changable-field-input" type="text" name="${name}" aria-label=".form-control-sm example">
+          </li>
+        `;
+      });
+      const [_, ...changableFieldsArrWithoutName] = changableFieldsArr;
+      const changableFieldsHtml = changableFieldsArrWithoutName.reduce((acc, cur) => acc + cur, '');
+
+      selectedReceiversChangableFieldsLabels.forEach(label => label.style.display = 'block');
+      selectedReceiversPlacesForChangableFields.forEach(place => {
+        place.style.display = 'block';
+        place.innerHTML = changableFieldsHtml;
+      });
+    }
+
+    //adding changable fields names to hidden input
+    const hiddenInputForChangableFieldsList = document.querySelector('input[name=changableFieldsList]');
+    const changableFieldsUl = document.querySelector('#letter-changable-fields-list');
+    const changableFieldsNames = [...changableFieldsUl.children].map((li) => li.innerText);
+    hiddenInputForChangableFieldsList.value = changableFieldsNames;
+  };
+
+
+  // SELECTED RECEIVERS LIST SECTION ____________________________________________________________________________________________
+  //checking if user setup all inputs and changing user text depending on card changable fields
+  ['input', 'click'].forEach(event => document.querySelector('section').addEventListener(event, sectionEventFunc));
+  function sectionEventFunc(event) {
+    if(event.type === 'input' && [...event.target.classList].includes('card-changable-field-input')){
+      const currentCard = event.target.parentElement.parentElement.parentElement;
+      const currentCardLetterTextElementHtml = currentCard.children[2].children[1].children[0];
+      const currentCardListItemsHtml = [...currentCard.children[4].children];
+      const letterText = document.querySelector('#floatingTextarea2').value;
+      const cardAllChangableFieldsArr = currentCardListItemsHtml.map((li) => {
+        return {
+          name: li.children[1].name,
+          value: li.children[1].value
+        };
+      });
+      
+      if(letterText.includes('<name>')){
+        const receiverName = currentCard.querySelector('.card-title').textContent;
+        const letterTextWithName = letterText.replace(/<name>/g, receiverName);
+        editReceiverCardText(letterTextWithName, currentCardLetterTextElementHtml, cardAllChangableFieldsArr);
+      }else{
+        editReceiverCardText(letterText, currentCardLetterTextElementHtml, cardAllChangableFieldsArr);
+      }
+    }
+    createButtonChecker();
+  };
+
+  // checking if user setup all inputs
+  function createButtonChecker() {
+    const createButton = document.querySelector('#create-template-button');
+    const templateNameValidation = document.querySelector('#templateName').value.length > 0;
+    const letterTextValidation = document.querySelector('#floatingTextarea2').value.length > 0;
+    const selectedUsersValidation = document.querySelector('#selected-receivers-div').children.length > 0;
+    if(templateNameValidation && letterTextValidation && selectedUsersValidation) {
+      createButton.disabled = false;
+    }else{
+      createButton.disabled = true;
+    }
+  };
+
+  // changing user text depending on card changable fields
+  function editReceiverCardText(text, letterTextElement, changableFieldsArr) {
+    if(changableFieldsArr.length === 0){
+      letterTextElement.innerText = text;
+    }else{
+      const fieldName = changableFieldsArr[0].name;
+      const fieldValue = changableFieldsArr[0].value;
+      let newText;
+      const match = new RegExp(fieldName, 'g');
+      fieldValue !== '' ? newText = text.replace(match, fieldValue) : newText = text;
+      const [_, ...newChangableFieldsArr] = changableFieldsArr;
+      editReceiverCardText(newText, letterTextElement, newChangableFieldsArr);
+    }
+  };
+
+
+  // FORM SENDING SETUP ____________________________________________________________________________________________
+  //adding receiver personalized letter text to hidden input before sending
+  function addFormHiddenInputs() {
+    // adding each card personilized letter text to form hidden input 
+    const selectedReceiversCards = document.querySelectorAll('.added-receiver-card');
+    selectedReceiversCards.forEach((card) => {
+      const receiverLetterText = card.querySelector('.addLetter-receiver-text').innerHTML;
+      const hiddenInputForLetterText = card.querySelector('input[name=receiverLetterText]');
+      hiddenInputForLetterText.value = receiverLetterText;
+    });
+  };
+
+  //sending from 
+  function sendForm() {
+    const form = document.querySelector('#addLetterForm');
+    form.submit();
+  };
+
+
+  // POPUPS ____________________________________________________________________________________________
 
 </script>
