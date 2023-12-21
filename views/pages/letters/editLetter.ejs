@@ -22,7 +22,7 @@
           <!-- top tab with select "select all" button and seacrh input -->
           <div class="all-receivers-top-tab">
             <div class="addLetter-all-receivers-buttons-div">
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateSelectedReceiversList">Update selected receivers list</button>
+              <button id="addReceiversButton" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateSelectedReceiversList">Update selected receivers list</button>
             </div>
             <div class="addLetter-all-receivers-buttons-div">
               <button type="button" class="btn btn-secondary" onclick="resetReceiversSelection()">Reset selection</button>
@@ -38,13 +38,13 @@
               <% receivers.forEach((receiver) => { %>
                 <% if(specifiedReceiversIds.includes(String(receiver._id))){ %>
                   <tr class="receiver all-receivers-table-receiver">
-                    <td class="table-primary"><input class="form-check-input" type="checkbox" name="receiverId" value="<%= receiver._id %>,<%= receiver.name %>,<%= receiver.email %>" checked></td> 
+                    <td class="table-primary"><input class="form-check-input" type="checkbox" name="receiverId" value="<%= receiver._id %>,<%= receiver.name %>,<%= receiver.email %>" onclick="tryToEnableAddReceiversButton()" checked></td> 
                     <td class="table-primary"><%= receiver.name %></td>
                     <td class="table-primary"><%= receiver.email %></td>
                   </tr>
                 <% }else{ %>
                   <tr class="receiver all-receivers-table-receiver">
-                    <td class="table-primary"><input class="form-check-input" type="checkbox" name="receiverId" value="<%= receiver._id %>,<%= receiver.name %>,<%= receiver.email %>" ></td> 
+                    <td class="table-primary"><input class="form-check-input" type="checkbox" name="receiverId" value="<%= receiver._id %>,<%= receiver.name %>,<%= receiver.email %>" onclick="tryToEnableAddReceiversButton()"></td> 
                     <td class="table-primary"><%= receiver.name %></td>
                     <td class="table-primary"><%= receiver.email %></td>
                   </tr>
@@ -228,6 +228,17 @@
     });
   };
 
+  // enable the add button when two or more checkboxes checked
+  function tryToEnableAddReceiversButton() {
+    const addButton = document.querySelector('button[id=addReceiversButton]');
+    const enabledCheckboxes = document.querySelectorAll('input[type=checkbox].form-check-input:checked');
+    if(enabledCheckboxes.length >= 2){
+      addButton.disabled = false;
+    }else{
+      addButton.disabled = true;
+    }
+  };
+
   //select all button
   function selectAll() {
     const receiversCheckboxes = document.querySelectorAll('.all-receivers-table-receiver .form-check-input');
@@ -245,6 +256,7 @@
       button.classList.add('btn-primary');
       receiversCheckboxes.forEach(checkbox => checkbox.checked = false);
     }
+    tryToEnableAddReceiversButton();
   };
 
   //reset receivers seclection button

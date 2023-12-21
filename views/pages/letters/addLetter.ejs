@@ -22,7 +22,7 @@
           <!-- top tab with select "select all" button and seacrh input -->
           <div class="all-receivers-top-tab">
             <div class="addLetter-all-receivers-buttons-div">
-              <button type="button" class="btn btn-success" onclick="addSelectedToReceiversList()">Add selected to receivers list</button>
+              <button id="addReceiversButton" type="button" class="btn btn-success" onclick="addSelectedToReceiversList()" disabled>Add selected to receivers list</button>
             </div>
             <div class="addLetter-all-receivers-buttons-div">
               <button id="selectAllButton" type="button" class="btn btn-primary" onclick="selectAll()">Select all</button>
@@ -35,7 +35,7 @@
             <tbody>
               <% receiversList.forEach((receiver) => { %>
               <tr class="receiver all-receivers-table-receiver">
-                <td class="table-primary"><input class="form-check-input" type="checkbox" name="receiverId" value="<%= receiver._id %>,<%= receiver.name %>,<%= receiver.email %>" ></td> 
+                <td class="table-primary"><input class="form-check-input" type="checkbox" name="receiverId" value="<%= receiver._id %>,<%= receiver.name %>,<%= receiver.email %>" onclick="tryToEnableAddReceiversButton()"></td> 
                 <td class="table-primary"><%= receiver.name %></td>
                 <td class="table-primary"><%= receiver.email %></td>
               </tr>
@@ -131,6 +131,17 @@
     });
   };
 
+  // enable the add button when two or more checkboxes checked
+  function tryToEnableAddReceiversButton() {
+    const addButton = document.querySelector('button[id=addReceiversButton]');
+    const enabledCheckboxes = document.querySelectorAll('input[type=checkbox].form-check-input:checked');
+    if(enabledCheckboxes.length >= 2){
+      addButton.disabled = false;
+    }else{
+      addButton.disabled = true;
+    }
+  };
+
   //select all button
   function selectAll() {
     const receiversCheckboxes = document.querySelectorAll('.all-receivers-table-receiver .form-check-input');
@@ -148,6 +159,7 @@
       button.classList.add('btn-primary');
       receiversCheckboxes.forEach(checkbox => checkbox.checked = false);
     }
+    tryToEnableAddReceiversButton();
   };
 
   //adding selelected to receivers list

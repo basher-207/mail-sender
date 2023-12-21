@@ -1,5 +1,3 @@
-const util = require('util'); //for logging large obj
-
 const Receiver = require('../models/ReceiverModel.js');
 const Letter = require('../models/LetterModel.js');
 
@@ -20,12 +18,13 @@ exports.getReceivers = async (req, res) => {
 // POST /receivers 
 // deleting selected receivers
 exports.deleteReceivers = async (req, res) => {
-  receiverIdToDelete = req.body.receiverId; //receiversIdsToDelete
+  receiverIdToDelete = req.body.receiverId;
   if(!receiverIdToDelete){
     res.redirect('/receivers');
   }else{
     try {
       const deletedReceiver = await Receiver.findByIdAndDelete(receiverIdToDelete);
+
       // delete receiver from letter template relation
       deletedReceiver.lettersTemplates.forEach(async (letterId) => {
         const letter = await Letter.findById(letterId.toString());
