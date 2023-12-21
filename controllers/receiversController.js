@@ -1,4 +1,7 @@
+const util = require('util'); //for logging large obj
+
 const Receiver = require('../models/ReceiverModel.js');
+const Letter = require('../models/LetterModel.js');
 
 // GET /receivers
 // rendering receivers page
@@ -22,6 +25,17 @@ exports.deleteReceivers = async (req, res) => {
     res.redirect('/receivers');
   }else{
     try {
+      // delete receivers from letter template relation
+      const receiversToDelete = await Receiver.find({ _id: {$in: receiversIdsToDelete}});
+      receiversToDelete.forEach((receiver) => {
+        receiver.lettersTemplates.forEach(async (letterId) => {
+          const letter = await Letter.findById(letterId.toString());
+          const index = letter.personalizedLetters.findIndex((receiverInfo) =>  receiverInfo.receiver.toString() === receiver._id.toString());
+          letter.personalizedLetters.splice(index, 1);
+          letter.save();
+        })
+      });
+
       await Receiver.deleteMany({ _id: {$in: receiversIdsToDelete}});
       res.redirect('/receivers');
     } catch (error) {

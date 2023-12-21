@@ -45,6 +45,7 @@ exports.addLetter = async (req, res) => {
       });
       return;
     }
+    
     const idsLength = _id.length;
     const namesLength = name.length;
     const emailLength = email.length;
@@ -62,6 +63,13 @@ exports.addLetter = async (req, res) => {
     
     const letterTemplate = new Letter(letterTemplateStructured);
     await letterTemplate.save();
+
+    // adding letterTemplateId relationships to receivers collection
+    _id.forEach(async (id) => {
+      const receiver = await Receiver.findById(id);
+      receiver.lettersTemplates.push(letterTemplate._id);
+      receiver.save();
+    });
 
     res.redirect('/letters')
   }catch(error){
@@ -126,6 +134,7 @@ exports.getEditPageForLetterById = async (req, res) => {
 exports.editLetterById = async (req, res) => {
   try {
     const templateId = req.params.id;
+    const letterTemplateOld = await Letter.findById(templateId);
     const {templateName, rowMessage, _id, name, email, receiverLetterText, changableFieldsList, ...changableFields} = req.body;
     const idsLength = _id.length;
     const namesLength = name.length;
@@ -149,8 +158,27 @@ exports.editLetterById = async (req, res) => {
 
     const letter = new rowLetter(templateName, rowMessage, changableFieldsList, _id, receiverLetterText, changableFields);
     const letterTemplateStructured = letter.getletterTemplateStructure();
+    const updatedLetter = await Letter.findByIdAndUpdate(templateId, letterTemplateStructured, {new: true});
 
-    await Letter.findByIdAndUpdate(templateId, letterTemplateStructured);
+    // adding letterTemplateId relationships to receivers collection
+    _id.forEach(async (id) => {
+      const receiver = await Receiver.findById(id);
+      if(!receiver.lettersTemplates.includes(updatedLetter._id)){
+        receiver.lettersTemplates.push(updatedLetter._id);
+        receiver.save();
+      }
+    });
+
+    // delete letter template relation from receivers who was unselected
+    const oldReceiversIdsArray = letterTemplateOld.personalizedLetters.map((receiverInfo) => receiverInfo.receiver.toString());
+    const receiversIdsToUpdate = oldReceiversIdsArray.filter((el) => !_id.includes(el));
+    const receiversToUpdate = await Receiver.find({ '_id': { $in: receiversIdsToUpdate } });
+    receiversToUpdate.forEach(async (receiver) => {
+      const index = receiver.lettersTemplates.indexOf(updatedLetter._id);
+      receiver.lettersTemplates.splice(index, 1);
+      receiver.save();
+    });
+
     res.redirect('/letters');
   } catch (error) {
     res.status(500).json({
@@ -163,7 +191,17 @@ exports.editLetterById = async (req, res) => {
 exports.deleteLetterById = async (req, res) => {
   const letterId = req.params.id;
   try {
-    await Letter.findByIdAndDelete(letterId);
+    const deletedLetter = await Letter.findByIdAndDelete(letterId);
+
+    // delete letter template relation from receivers who was unselected
+    const receiverIds = deletedLetter.personalizedLetters.map((receiverInfo) => receiverInfo.receiver.toString());
+    const receiversToUpdate = await Receiver.find({ '_id': { $in: receiverIds } });
+    receiversToUpdate.forEach(async (receiver) => {
+      const index = receiver.lettersTemplates.indexOf(deletedLetter._id);
+      receiver.lettersTemplates.splice(index, 1);
+      receiver.save();
+    });
+
     res.redirect('/letters');
   } catch (error) {
     res.status(500).json({
